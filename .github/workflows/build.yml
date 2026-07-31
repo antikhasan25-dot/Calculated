@@ -19,27 +19,26 @@ jobs:
           shopt -s dotglob
           mv */* . 2>/dev/null || true
         fi
-        # মিসিং .env ফাইল তৈরি করা যেন বিল্ড এরর না দেয়
         touch .env
         touch .env.example
 
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
     - name: Generate Gradle Wrapper
-      run: gradle wrapper --gradle-version 8.2
+      run: gradle wrapper --gradle-version 8.4
 
     - name: Make gradlew executable
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon
+      run: ./gradlew assembleDebug --no-daemon --no-configuration-cache
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
