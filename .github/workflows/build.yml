@@ -12,9 +12,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Unzip project
+    - name: Unzip and Move Files
       run: |
         unzip -o Calculated.zip
+        # যদি সাব-ফোল্ডারের ভেতরে প্রজেক্ট থাকে তবে তা মেইন ফোল্ডারে আনবে
+        if [ ! -f "build.gradle.kts" ] && [ ! -f "build.gradle" ]; then
+          shopt -s dotglob
+          mv */* . 2>/dev/null || true
+        fi
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
