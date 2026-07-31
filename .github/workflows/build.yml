@@ -22,6 +22,12 @@ jobs:
         touch .env
         touch .env.example
 
+    - name: Fix google-services.json package name
+      run: |
+        if [ -f "app/google-services.json" ]; then
+          sed -i 's/"package_name": "[^"]*"/"package_name": "com.aistudio.childguardian.pckg"/g' app/google-services.json
+        fi
+
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
@@ -38,7 +44,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug -x processDebugGoogleServices --no-daemon --no-configuration-cache
+      run: ./gradlew assembleDebug --no-daemon --no-configuration-cache
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
