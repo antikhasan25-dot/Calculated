@@ -19,6 +19,9 @@ jobs:
           shopt -s dotglob
           mv */* . 2>/dev/null || true
         fi
+        # মিসিং .env ফাইল তৈরি করা যেন বিল্ড এরর না দেয়
+        touch .env
+        touch .env.example
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
