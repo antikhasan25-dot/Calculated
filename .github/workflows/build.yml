@@ -15,7 +15,6 @@ jobs:
     - name: Unzip and Move Files
       run: |
         unzip -o Calculated.zip
-        # যদি সাব-ফোল্ডারের ভেতরে প্রজেক্ট থাকে তবে তা মেইন ফোল্ডারে আনবে
         if [ ! -f "build.gradle.kts" ] && [ ! -f "build.gradle" ]; then
           shopt -s dotglob
           mv */* . 2>/dev/null || true
@@ -29,9 +28,11 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.4'
 
     - name: Build APK with Gradle
-      run: gradle assembleDebug
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
